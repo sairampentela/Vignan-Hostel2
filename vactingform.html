@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hostel Vacating Form</title>
+    <style>
+        /* Global styles */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        /* Form container styles */
+        .form-container {
+            background-color: white;
+            padding: 30px;
+            width: 400px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h2 {
+            text-align: center;
+            color: #333;
+        }
+
+        label {
+            font-size: 14px;
+            margin-bottom: 8px;
+            display: block;
+            color: #555;
+        }
+
+        input[type="text"], input[type="date"], input[type="file"], textarea {
+            width: 100%;
+            padding: 10px;
+            margin: 8px 0;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            font-size: 14px;
+        }
+
+        select {
+            width: 100%;
+            padding: 10px;
+            margin: 8px 0;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            font-size: 14px;
+        }
+
+        button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            width: 100%;
+            margin-top: 10px;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        #confirmationMessage {
+            text-align: center;
+            margin-top: 50px;
+            font-size: 18px;
+        }
+
+        .confirmation-data {
+            text-align: left;
+            margin-top: 20px;
+            font-size: 16px;
+        }
+
+        .confirmation-data div {
+            margin-bottom: 8px;
+        }
+    </style>
+</head>
+<body>
+    <div class="form-container">
+        <h2>Hostel Vacating Form</h2>
+        <form id="vacatingForm">
+            <label for="regNo">Registration Number:</label>
+            <input type="text" id="regNo" name="regNo" required>
+
+            <label for="studentName">Name of the Student:</label>
+            <input type="text" id="studentName" name="studentName" required>
+
+            <label for="dob">Date of Birth:</label>
+            <input type="date" id="dob" name="dob" required>
+
+            <label for="caretakerName">Caretaker Name:</label>
+            <input type="text" id="caretakerName" name="caretakerName" required>
+
+            <label for="vacatingDate">Date of Vacating:</label>
+            <input type="date" id="vacatingDate" name="vacatingDate" required>
+
+            <label for="reason">Reason for Vacating:</label>
+            <textarea id="reason" name="reason" rows="4" required></textarea>
+
+            <label for="idProof">Upload Valid ID Proof:</label>
+            <input type="file" id="idProof" name="idProof" required>
+
+            <button type="submit" id="submitBtn">Submit</button>
+        </form>
+    </div>
+
+    <div id="confirmationMessage" style="display:none;">
+        <h3>Vacating Form Submitted Successfully!</h3>
+        <div class="confirmation-data">
+            <div><strong>Registration Number:</strong> <span id="displayRegNo"></span></div>
+            <div><strong>Name of the Student:</strong> <span id="displayStudentName"></span></div>
+            <div><strong>Date of Birth:</strong> <span id="displayDob"></span></div>
+            <div><strong>Caretaker Name:</strong> <span id="displayCaretakerName"></span></div>
+            <div><strong>Date of Vacating:</strong> <span id="displayVacatingDate"></span></div>
+            <div><strong>Reason for Vacating:</strong> <span id="displayReason"></span></div>
+            <div><strong>ID Proof:</strong> <span id="displayIdProof"></span></div>
+        </div>
+    </div>
+
+    <script>
+        // Handle form submission
+        document.getElementById("vacatingForm").addEventListener("submit", function(event) {
+            event.preventDefault(); // Prevent the form from submitting normally
+            
+            // Get the form values
+            const regNo = document.getElementById("regNo").value;
+            const studentName = document.getElementById("studentName").value;
+            const dob = document.getElementById("dob").value;
+            const caretakerName = document.getElementById("caretakerName").value;
+            const vacatingDate = document.getElementById("vacatingDate").value;
+            const reason = document.getElementById("reason").value;
+            const idProof = document.getElementById("idProof").files[0] ? document.getElementById("idProof").files[0].name : 'No file uploaded';
+
+            // Check if any required fields are missing
+            if (!regNo || !studentName || !dob || !caretakerName || !vacatingDate || !reason || !idProof) {
+                alert("Please fill in all fields.");
+                return;
+            }
+
+            // Store the form data and mark the form as filled
+            localStorage.setItem('vacatingFormFilled', true);
+            localStorage.setItem('studentData', JSON.stringify({
+                regNo: regNo,
+                studentName: studentName,
+                dob: dob,
+                caretakerName: caretakerName,
+                vacatingDate: vacatingDate,
+                reason: reason,
+                idProof: idProof
+            }));
+
+            // Display the values in the confirmation section
+            document.getElementById("displayRegNo").textContent = regNo;
+            document.getElementById("displayStudentName").textContent = studentName;
+            document.getElementById("displayDob").textContent = dob;
+            document.getElementById("displayCaretakerName").textContent = caretakerName;
+            document.getElementById("displayVacatingDate").textContent = vacatingDate;
+            document.getElementById("displayReason").textContent = reason;
+            document.getElementById("displayIdProof").textContent = idProof;
+
+            // Hide the form and show the confirmation message
+            document.getElementById("vacatingForm").style.display = "none";
+            document.getElementById("confirmationMessage").style.display = "block";
+
+            // Clear the form fields after submission
+            document.getElementById("vacatingForm").reset();
+        });
+    </script>
+</body>
+</html>

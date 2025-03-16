@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hostel Outpass Form</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            flex-direction: column;
+        }
+
+        .form-container, .display-container {
+            background-color: white;
+            padding: 30px;
+            width: 400px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+        }
+
+        h2, h3 {
+            text-align: center;
+            color: #333;
+        }
+
+        label {
+            font-size: 14px;
+            margin-bottom: 8px;
+            display: block;
+            color: #555;
+        }
+
+        input, select, textarea {
+            width: 100%;
+            padding: 10px;
+            margin: 8px 0;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            font-size: 14px;
+        }
+
+        button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            width: 100%;
+            margin-top: 10px;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        .display-container {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="form-container" id="formContainer">
+        <h2>Hostel Outpass Form</h2>
+        <form id="outpassForm">
+            <label for="regNo">Registration Number:</label>
+            <input type="text" id="regNo" required>
+
+            <label for="studentName">Name of the Student:</label>
+            <input type="text" id="studentName" required>
+
+            <label for="roomNo">Room Number:</label>
+            <input type="text" id="roomNo" required>
+
+            <label for="caretakerName">Caretaker Name:</label>
+            <input type="text" id="caretakerName" required>
+
+            <label for="inTime">In Time:</label>
+            <input type="datetime-local" id="inTime" required>
+
+            <label for="outTime">Out Time:</label>
+            <input type="datetime-local" id="outTime" required>
+
+            <label for="reason">Reason for Outing:</label>
+            <textarea id="reason" rows="4" required></textarea>
+
+            <button type="submit">Submit</button>
+        </form>
+    </div>
+
+    <div class="display-container" id="displayContainer">
+        <h3>Outpass Submitted Successfully!</h3>
+        <p><strong>Registration Number:</strong> <span id="displayRegNo"></span></p>
+        <p><strong>Name:</strong> <span id="displayStudentName"></span></p>
+        <p><strong>Room Number:</strong> <span id="displayRoomNo"></span></p>
+        <p><strong>Caretaker Name:</strong> <span id="displayCaretakerName"></span></p>
+        <p><strong>In Time:</strong> <span id="displayInTime"></span></p>
+        <p><strong>Out Time:</strong> <span id="displayOutTime"></span></p>
+        <p><strong>Reason:</strong> <span id="displayReason"></span></p>
+    </div>
+
+    <script>
+        document.getElementById("outpassForm").addEventListener("submit", function(event) {
+            event.preventDefault();
+            
+            let studentData = {
+                regNo: document.getElementById("regNo").value,
+                studentName: document.getElementById("studentName").value,
+                roomNo: document.getElementById("roomNo").value,
+                caretakerName: document.getElementById("caretakerName").value,
+                inTime: document.getElementById("inTime").value,
+                outTime: document.getElementById("outTime").value,
+                reason: document.getElementById("reason").value
+            };
+
+            localStorage.setItem("studentData", JSON.stringify(studentData));
+            localStorage.setItem("outpassFormFilled", "true");
+
+            document.getElementById("displayRegNo").textContent = studentData.regNo;
+            document.getElementById("displayStudentName").textContent = studentData.studentName;
+            document.getElementById("displayRoomNo").textContent = studentData.roomNo;
+            document.getElementById("displayCaretakerName").textContent = studentData.caretakerName;
+            document.getElementById("displayInTime").textContent = studentData.inTime;
+            document.getElementById("displayOutTime").textContent = studentData.outTime;
+            document.getElementById("displayReason").textContent = studentData.reason;
+            
+            document.getElementById("formContainer").style.display = "none";
+            document.getElementById("displayContainer").style.display = "block";
+        });
+    </script>
+</body>
+</html>

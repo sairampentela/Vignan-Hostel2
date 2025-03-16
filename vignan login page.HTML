@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Login Page</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: lightgray;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .container {
+            max-width: 400px;
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px gray;
+            text-align: center;
+        }
+
+        h1, h2 {
+            color: blue;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+            text-align: left;
+        }
+
+        label {
+            font-size: 14px;
+            color: darkgray;
+        }
+
+        input[type="text"], input[type="password"], select {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            border: 1px solid gray;
+            border-radius: 4px;
+        }
+
+        .forgot-password {
+            display: block;
+            text-align: right;
+            font-size: 12px;
+            color: blue;
+            text-decoration: none;
+            margin-top: 10px;
+        }
+
+        .forgot-password:hover {
+            text-decoration: underline;
+        }
+
+        .login-btn, .logout-btn {
+            width: 100%;
+            padding: 12px;
+            background-color: green;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            margin-top: 10px;
+        }
+
+        .login-btn:hover {
+            background-color: darkgreen;
+        }
+
+        .logout-btn {
+            background-color: red;
+        }
+
+        .logout-btn:hover {
+            background-color: darkred;
+        }
+    </style>
+</head>
+<body>
+    <h1>Login Page</h1>
+    <div class="container" id="login-container">
+        <h2>Student Login</h2>
+        
+        <form id="login-form">
+            <div class="form-group">
+                <label for="registrationNumber">Registration Number</label>
+                <input type="text" id="registrationNumber" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input type="password" id="password" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="userType">User Type</label>
+                <select id="userType" required>
+                    <option value="" disabled selected>Select user type</option>
+                    <option value="student">Student</option>
+                    <option value="parent">Parent</option>
+                    <option value="staff">Staff</option>
+                </select>
+            </div>
+            <button type="submit" class="login-btn">Login</button>
+            <a href="forgot_password.html" class="forgot-password">Forgot Password?</a>
+        </form>
+    </div>
+
+    <script>
+        document.getElementById("login-form").addEventListener("submit", function (event) {
+            event.preventDefault();
+            
+            const regNumber = document.getElementById("registrationNumber").value;
+            const password = document.getElementById("password").value;
+            const userType = document.getElementById("userType").value;
+
+            const users = {
+                "12345": { password: "password123", userType: "student", details: {
+                    name: "John Doe", fatherName: "Robert Doe", motherName: "Jane Doe", dob: "2002-06-15",
+                    roomNumber: "A102", studentPhone: "9876543210", parentPhone: "9123456789", caretakerName: "Mr. Smith", caretakerPhone: "8765432109"
+                }},
+                "67890": { password: "password456", userType: "student", details: {
+                    name: "Alice Johnson", fatherName: "Mark Johnson", motherName: "Lisa Johnson", dob: "2003-08-22",
+                    roomNumber: "B203", studentPhone: "9765432101", parentPhone: "9345678901", caretakerName: "Mrs. Brown", caretakerPhone: "8654321098"
+                }},
+                "staff001": { password: "staffpass", userType: "staff" }
+            };
+
+            if (users[regNumber] && users[regNumber].password === password && users[regNumber].userType === userType) {
+                if (userType === "student") {
+                    const student = users[regNumber].details;
+                    document.getElementById("login-container").innerHTML = `
+                        <h2>Welcome, ${student.name}</h2>
+                        <p><strong>Registration Number:</strong> ${regNumber}</p>
+                        <p><strong>Father's Name:</strong> ${student.fatherName}</p>
+                        <p><strong>Mother's Name:</strong> ${student.motherName}</p>
+                        <p><strong>Date of Birth:</strong> ${student.dob}</p>
+                        <p><strong>Room Number:</strong> ${student.roomNumber}</p>
+                        <p><strong>Student Phone:</strong> ${student.studentPhone}</p>
+                        <p><strong>Parent Phone:</strong> ${student.parentPhone}</p>
+                        <p><strong>Caretaker Name:</strong> ${student.caretakerName}</p>
+                        <p><strong>Caretaker Phone:</strong> ${student.caretakerPhone}</p>
+                        <button class="logout-btn" onclick="location.reload()">Logout</button>
+                    `;
+                } else if (userType === "staff") {
+                    let studentRegNumber = prompt("Staff, please enter the student's registration number:");
+                    if (users[studentRegNumber] && users[studentRegNumber].userType === "student") {
+                        const student = users[studentRegNumber].details;
+                        document.getElementById("login-container").innerHTML = `
+                            <h2>Student Details</h2>
+                            <p><strong>Registration Number:</strong> ${studentRegNumber}</p>
+                            <p><strong>Name:</strong> ${student.name}</p>
+                            <p><strong>Father's Name:</strong> ${student.fatherName}</p>
+                            <p><strong>Mother's Name:</strong> ${student.motherName}</p>
+                            <p><strong>Date of Birth:</strong> ${student.dob}</p>
+                            <p><strong>Room Number:</strong> ${student.roomNumber}</p>
+                            <p><strong>Student Phone:</strong> ${student.studentPhone}</p>
+                            <p><strong>Parent Phone:</strong> ${student.parentPhone}</p>
+                            <p><strong>Caretaker Name:</strong> ${student.caretakerName}</p>
+                            <p><strong>Caretaker Phone:</strong> ${student.caretakerPhone}</p>
+                            <button class="logout-btn" onclick="location.reload()">Logout</button>
+                        `;
+                    } else {
+                        alert("Invalid student registration number.");
+                    }
+                }
+            } else {
+                alert("Invalid credentials or user type. Please try again.");
+            }
+        });
+    </script>
+</body>
+</html>

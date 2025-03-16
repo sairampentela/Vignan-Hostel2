@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hostel Vacating Form</title>
+    <style>
+        /* Global styles */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        /* Form container styles */
+        .form-container {
+            background-color: white;
+            padding: 30px;
+            width: 400px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h2 {
+            text-align: center;
+            color: #333;
+        }
+
+        label {
+            font-size: 14px;
+            margin-bottom: 8px;
+            display: block;
+            color: #555;
+        }
+
+        input[type="text"], input[type="date"], input[type="file"], textarea {
+            width: 100%;
+            padding: 10px;
+            margin: 8px 0;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            font-size: 14px;
+        }
+
+        select {
+            width: 100%;
+            padding: 10px;
+            margin: 8px 0;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            font-size: 14px;
+        }
+
+        button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            width: 100%;
+            margin-top: 10px;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        #confirmationMessage {
+            text-align: center;
+            margin-top: 50px;
+            font-size: 18px;
+        }
+
+        .confirmation-data {
+            text-align: left;
+            margin-top: 20px;
+            font-size: 16px;
+        }
+
+        .confirmation-data div {
+            margin-bottom: 8px;
+        }
+        
+        /* Faculty login container styles */
+        .login-container {
+            background-color: white;
+            padding: 30px;
+            width: 400px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            display: block;
+        }
+
+        /* Hide the form by default */
+        #facultyDataContainer {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <!-- Faculty Login -->
+    <div id="facultyLoginContainer" class="login-container">
+        <h2>Faculty Login</h2>
+        <input type="text" id="facultyUsername" placeholder="Username" required>
+        <input type="password" id="facultyPassword" placeholder="Password" required>
+        <button onclick="facultyLogin()">Login</button>
+    </div>
+
+    <!-- Faculty Data Verification -->
+    <div id="facultyDataContainer">
+        <h2>Student Vacating Form Data</h2>
+        <table>
+            <tr>
+                <th>Student Name</th>
+                <th>Reg No</th>
+                <th>Caretaker Name</th>
+                <th>Vacating Date</th>
+                <th>Reason</th>
+            </tr>
+            <tr>
+                <td id="displayStudentName"></td>
+                <td id="displayRegNo"></td>
+                <td id="displayCaretakerName"></td>
+                <td id="displayVacatingDate"></td>
+                <td id="displayReason"></td>
+            </tr>
+        </table>
+        <button onclick="printData()">Print</button>
+        <button onclick="logout()">Logout</button>
+    </div>
+
+    <script>
+        let studentData = {};
+        let formFilled = false;
+
+        // Handle Faculty Login
+        function facultyLogin() {
+            const username = document.getElementById("facultyUsername").value;
+            const password = document.getElementById("facultyPassword").value;
+
+            // Simple credential check for faculty login
+            if (username === "faculty" && password === "password123") {
+                // Prompt faculty for the student registration number
+                let regNo = prompt("Please enter the student's Registration Number:");
+
+                // Check if a valid registration number was entered
+                while (!regNo) {
+                    regNo = prompt("Registration Number is required. Please enter the student's Registration Number:");
+                }
+
+                // Fetch student data from local storage
+                studentData = JSON.parse(localStorage.getItem("studentData"));
+
+                // Check if the entered regNo matches the stored student data's regNo
+                if (studentData && studentData.regNo === regNo) {
+                    displayStudentData();
+                    document.getElementById("facultyLoginContainer").style.display = "none";
+                    document.getElementById("facultyDataContainer").style.display = "block";
+                } else {
+                    alert("No student data found for the provided Registration Number.");
+                }
+            } else {
+                alert("Invalid login credentials.");
+            }
+        }
+
+        // Handle displaying student data
+        function displayStudentData() {
+            document.getElementById("displayStudentName").textContent = studentData.studentName;
+            document.getElementById("displayRegNo").textContent = studentData.regNo;
+            document.getElementById("displayCaretakerName").textContent = studentData.caretakerName;
+            document.getElementById("displayVacatingDate").textContent = studentData.vacatingDate;
+            document.getElementById("displayReason").textContent = studentData.reason;
+        }
+
+        // Handle logout functionality
+        function logout() {
+            document.getElementById("facultyDataContainer").style.display = "none";
+            document.getElementById("facultyLoginContainer").style.display = "block";
+        }
+
+        // Function to print the data
+        function printData() {
+            const printContent = document.getElementById("facultyDataContainer").innerHTML;
+            const newWindow = window.open("", "", "width=800,height=600");
+            newWindow.document.write("<html><head><title>Print</title></head><body>");
+            newWindow.document.write(printContent);
+            newWindow.document.write("</body></html>");
+            newWindow.document.close();
+            newWindow.print();
+        }
+    </script>
+</body>
+</html>

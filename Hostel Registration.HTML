@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hostel Registration</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: lightgray;
+        }
+        .container {
+            max-width: 600px;
+            margin: 50px auto;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+            text-align: center;
+        }
+        h1 {
+            color: black;
+        }
+        form {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            text-align: left;
+        }
+        label {
+            font-weight: bold;
+        }
+        input, select, textarea {
+            padding: 10px;
+            font-size: 16px;
+            border: 1px solid gray;
+            border-radius: 5px;
+            width: 100%;
+        }
+        button {
+            background-color: green;
+            color: white;
+            padding: 10px;
+            font-size: 18px;
+            font-weight: bold;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: darkgreen;
+        }
+        .note {
+            font-size: 14px;
+            color: gray;
+            text-align: center;
+        }
+        #payment-page, #payment-form {
+            display: none;
+        }
+        .qr-container img {
+            width: 200px;
+            height: 200px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container" id="registration-page">
+        <h1>Hostel Registration</h1>
+        <p><strong>Total Rooms Available:</strong> <span id="rooms-available">10</span></p>
+        <form id="registration-form">
+            <label for="name">Full Name</label>
+            <input type="text" id="name" name="name" required>
+
+            <label for="email">Email Address</label>
+            <input type="email" id="email" name="email" required>
+
+            <label for="phone">Phone Number</label>
+            <input type="tel" id="phone" name="phone" required>
+
+            <label for="dob">Date of Birth</label>
+            <input type="date" id="dob" name="dob" required>
+
+            <label for="gender">Gender</label>
+            <select id="gender" name="gender" required>
+                <option value="">--Select--</option>
+                <option value="male">Male</option>
+                <option value="female">Female</option>
+                <option value="other">Other</option>
+            </select>
+
+            <label for="course">Course</label>
+            <select id="course" name="course" required>
+                <option value="">--Select--</option>
+                <option value="B.Tech">B.Tech</option>
+                <option value="MBA">MBA</option>
+                <option value="MCA">MCA</option>
+                <option value="B.Sc">B.Sc</option>
+            </select>
+
+            <label for="address">Address</label>
+            <textarea id="address" name="address" rows="3" required></textarea>
+
+            <label for="room">Room Type</label>
+            <select id="room" name="room" required>
+                <option value="">--Select--</option>
+                <option value="AC">AC</option>
+                <option value="NON AC">NON AC</option>
+            </select>
+
+            <label for="id-proof">Upload ID Proof</label>
+            <input type="file" id="id-proof" name="id-proof" accept="image/*,application/pdf" required>
+
+            <button type="submit">Register</button>
+        </form>
+        <p class="note">*All fields are mandatory.</p>
+    </div>
+
+    <div class="container" id="payment-page">
+        <h1>Payment</h1>
+        <p><strong>Student Name:</strong> <span id="student-name"></span></p>
+        <p><strong>Amount:</strong> ₹5000</p>
+        <p><strong>Account Holder:</strong> Hostel Admin</p>
+        <div class="qr-container">
+            <img src="C:\Users\himas\OneDrive\Pictures\accountqr.jpg" alt="QR Code for Payment">
+        </div>
+        <p>Pay via:</p>
+        <button onclick="showPaymentForm('PhonePe')">PhonePe</button>
+        <button onclick="showPaymentForm('Google Pay')">Google Pay</button>
+        <button onclick="showPaymentForm('Paytm')">Paytm</button>
+    </div>
+
+    <div class="container" id="payment-form">
+        <h1 id="payment-method"></h1>
+        <label for="uplid">Enter UPI ID</label>
+        <input type="text" id="uplid" required>
+        <p><strong>Student Name:</strong> <span id="pay-student-name"></span></p>
+        <p><strong>Amount:</strong> ₹5000</p>
+        <p><strong>Account Holder:</strong> Hostel Admin</p>
+        <button onclick="alert('Payment Successful')">Confirm Payment</button>
+    </div>
+
+    <script>
+        document.getElementById('registration-form').addEventListener('submit', function(event) {
+            event.preventDefault();
+            let name = document.getElementById('name').value;
+            document.getElementById('student-name').textContent = name;
+            document.getElementById('pay-student-name').textContent = name;
+            document.getElementById('registration-page').style.display = 'none';
+            document.getElementById('payment-page').style.display = 'block';
+        });
+
+        function showPaymentForm(method) {
+            document.getElementById('payment-page').style.display = 'none';
+            document.getElementById('payment-form').style.display = 'block';
+            document.getElementById('payment-method').textContent = `Pay via ${method}`;
+        }
+    </script>
+</body>
+</html>

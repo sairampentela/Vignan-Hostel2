@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>facilities</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            width: 80%;
+            margin: 50px auto;
+            padding: 20px;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+        .sections-container {
+            display: flex;
+            flex-wrap: wrap; /* Allows images to wrap on smaller screens */
+            justify-content: space-between;
+            gap: 20px;
+        }
+        .section {
+            flex: 1 1 22%; /* Ensures 4 sections per row, and flexibility for smaller screen sizes */
+            text-align: center;
+            background-color: aquamarine;
+            border: dashed 2px brown;
+            padding: 20px;
+            border-radius: 8px;
+        }
+        .section img {
+            width: 100%; /* makes the image responsive */
+            max-width: 250px; /* limits the maximum size */
+            height: auto; /* maintains the aspect ratio */
+            border-radius: 8px;
+        }
+        .section p {
+            font-size: 1.1em;
+            color: #333;
+            margin-top: 10px;
+        }
+        .section p strong {
+            color: #2e8b57;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>facilities</h1>
+
+        <div class="sections-container">
+            <div class="section">
+                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTkB9pwVMFcU0IF-A5FXhNgUXLvK7AW8QFGLQ&s" alt="Mess Area">
+                <p>Our hostel has a spacious mess area with comfortable seating and a diverse menu, perfect for enjoying meals and socializing with fellow travelers.</p>
+                <p><strong>Mess Capacity:</strong> 500</p>
+            </div>
+            <div class="section">
+                <img src="https://images.unsplash.com/photo-1604719312566-8912e9227c6a?fm=jpg&q=60&w=3000&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8N3x8c3VwZXJtYXJrZXRzfGVufDB8fDB8fHww" alt="Supermarket">
+                <p>Our hostel has an on-site supermarket with essentials, snacks, and beverages, making it easy to shop without leaving the premises.</p>
+            </div>
+            <div class="section">
+                <img src="https://media.istockphoto.com/id/1128343692/photo/router-with-wi-fi.jpg?s=612x612&w=0&k=20&c=bwA_N4NTPGem99lssj8AhkhrjMpuCpkI4NWaO4CFPww=" alt="wifi">
+                <p>Our hostel features modern facilities like a high-speed internet connection, ensuring a comfortable and productive stay.</p>
+            </div>
+            <div class="section">
+                <img src="https://content.jdmagicbox.com/comp/guntur/y9/9999px863.x863.171122134844.t1y9/catalogue/snap-fitness-laxmipuram-guntur-aerobic-classes-nbgvj4cuyt.jpg" alt="gym">
+                <p>Relax in our cozy lounge area, designed for socializing and unwinding after a busy day.</p>
+            </div>
+            <div class="section">
+                <img src="https://thumbs.dreamstime.com/b/international-standard-badminton-court-19275447.jpg" alt="shuttle court">
+                <p>Enjoy breathtaking views from our beautiful rooftop garden, the perfect place to relax and connect with others.</p>
+            </div>
+            <div class="section">
+                <img src="https://5.imimg.com/data5/SELLER/Default/2023/3/294113665/AK/HI/HZ/157093178/synthetic-kabaddi-court-flooring-service.JPG">
+
+            </div>
+        </div>
+    </div>
+</body>
+</html>

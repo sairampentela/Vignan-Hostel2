@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Faculty Login</title>
+</head>
+<body>
+    <div class="login-container" id="login-container">
+        <h2>Faculty Login</h2>
+        <input type="text" id="username" placeholder="Username" required>
+        <input type="password" id="password" placeholder="Password" required>
+        <button onclick="login()">Login</button>
+    </div>
+
+    <div id="data-container" style="display:none;">
+        <h2>Student Outpass Data</h2>
+        <table>
+            <tr>
+                <th>Student Name</th>
+                <th>Reg No</th>
+                <th>Room No</th>
+                <th>Caretaker Name</th>
+                <th>In Time</th>
+                <th>Out Time</th>
+                <th>Reason</th>
+            </tr>
+            <tr>
+                <td id="studentName">N/A</td>
+                <td id="regNo">N/A</td>
+                <td id="roomNo">N/A</td>
+                <td id="caretakerName">N/A</td>
+                <td id="inTime">N/A</td>
+                <td id="outTime">N/A</td>
+                <td id="reason">N/A</td>
+            </tr>
+        </table>
+        <button id="printBtn" onclick="printData()">Print</button>
+        <div id="error-message"></div>
+    </div>
+
+    <script>
+        function getStoredData() {
+            let storedData = localStorage.getItem('studentData');
+            return storedData ? JSON.parse(storedData) : null;
+        }
+
+        function login() {
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            let studentData = getStoredData();
+            let formFilled = localStorage.getItem('outpassFormFilled') === 'true';
+
+            if (username === 'faculty' && password === 'faculty123') {
+                if (!studentData) {
+                    alert("No student data found. Ensure the student has submitted the form.");
+                    return;
+                }
+
+                let regNo = prompt("Please enter the student's Registration Number:");
+                if (regNo === studentData.regNo) {
+                    if (formFilled) {
+                        displayStudentData(studentData);
+                    } else {
+                        alert('Outpass form not submitted yet.');
+                    }
+                } else {
+                    alert('Student not found.');
+                }
+            } else {
+                alert('Invalid credentials, please try again.');
+            }
+        }
+
+        function displayStudentData(studentData) {
+            document.getElementById('login-container').style.display = 'none';
+            document.getElementById('data-container').style.display = 'block';
+
+            document.getElementById('studentName').textContent = studentData.studentName || 'N/A';
+            document.getElementById('regNo').textContent = studentData.regNo || 'N/A';
+            document.getElementById('roomNo').textContent = studentData.roomNo || 'N/A';
+            document.getElementById('caretakerName').textContent = studentData.caretakerName || 'N/A';
+            document.getElementById('inTime').textContent = studentData.inTime || 'N/A';
+            document.getElementById('outTime').textContent = studentData.outTime || 'N/A';
+            document.getElementById('reason').textContent = studentData.reason || 'N/A';
+        }
+
+        function printData() {
+            const printContent = document.getElementById('data-container').innerHTML;
+            const newWindow = window.open('', '', 'width=800, height=600');
+            newWindow.document.write('<html><head><title>Print</title></head><body>');
+            newWindow.document.write(printContent);
+            newWindow.document.write('</body></html>');
+            newWindow.document.close();
+            newWindow.print();
+        }
+    </script>
+</body>
+</html>
