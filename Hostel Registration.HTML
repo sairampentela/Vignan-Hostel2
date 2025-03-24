@@ -145,7 +145,30 @@
     <script>
         document.getElementById('registration-form').addEventListener('submit', function(event) {
             event.preventDefault();
-            let name = document.getElementById('name').value;
+            
+            let name = document.getElementById('name').value.trim();
+            let phone = document.getElementById('phone').value.trim();
+            let email = document.getElementById('email').value.trim();
+            
+            let nameRegex = /^[A-Za-z\s]+$/;
+            let phoneRegex = /^\d{10}$/;
+            let emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+
+            if (!nameRegex.test(name)) {
+                alert('Name should only contain letters and spaces.');
+                return;
+            }
+            
+            if (!phoneRegex.test(phone)) {
+                alert('Phone number must be exactly 10 digits.');
+                return;
+            }
+            
+            if (!emailRegex.test(email)) {
+                alert('Please enter a valid email address.');
+                return;
+            }
+
             document.getElementById('student-name').textContent = name;
             document.getElementById('pay-student-name').textContent = name;
             document.getElementById('registration-page').style.display = 'none';
