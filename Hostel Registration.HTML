@@ -57,7 +57,7 @@
             color: gray;
             text-align: center;
         }
-        #payment-page, #payment-form {
+        #payment-page, #payment-form, #confirmation-page {
             display: none;
         }
         .qr-container img {
@@ -67,6 +67,7 @@
     </style>
 </head>
 <body>
+    <!-- Registration Page -->
     <div class="container" id="registration-page">
         <h1>Hostel Registration</h1>
         <p><strong>Total Rooms Available:</strong> <span id="rooms-available">10</span></p>
@@ -118,6 +119,7 @@
         <p class="note">*All fields are mandatory.</p>
     </div>
 
+    <!-- Payment Page -->
     <div class="container" id="payment-page">
         <h1>Payment</h1>
         <p><strong>Student Name:</strong> <span id="student-name"></span></p>
@@ -132,24 +134,35 @@
         <button onclick="showPaymentForm('Paytm')">Paytm</button>
     </div>
 
+    <!-- Payment Form -->
     <div class="container" id="payment-form">
         <h1 id="payment-method"></h1>
-        <label for="uplid">Enter UPI ID</label>
-        <input type="text" id="uplid" required>
+        <label for="upi-id">Enter UPI ID</label>
+        <input type="text" id="upi-id" required>
+
         <p><strong>Student Name:</strong> <span id="pay-student-name"></span></p>
         <p><strong>Amount:</strong> ₹5000</p>
         <p><strong>Account Holder:</strong> Hostel Admin</p>
-        <button onclick="alert('Payment Successful')">Confirm Payment</button>
+        <button onclick="confirmPayment()">Confirm Payment</button>
+    </div>
+
+    <!-- Confirmation Page -->
+    <div class="container" id="confirmation-page">
+        <h1>Payment Successful ✅</h1>
+        <p><strong>Student Name:</strong> <span id="confirm-name"></span></p>
+        <p><strong>Payment Method:</strong> <span id="confirm-method"></span></p>
+        <p><strong>UPI ID:</strong> <span id="confirm-upi"></span></p>
+        <button onclick="window.print()">Print Confirmation</button>
     </div>
 
     <script>
         document.getElementById('registration-form').addEventListener('submit', function(event) {
             event.preventDefault();
-            
+
             let name = document.getElementById('name').value.trim();
-            let phone = document.getElementById('phone').value.trim();
             let email = document.getElementById('email').value.trim();
-            
+            let phone = document.getElementById('phone').value.trim();
+
             let nameRegex = /^[A-Za-z\s]+$/;
             let phoneRegex = /^\d{10}$/;
             let emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
@@ -158,12 +171,12 @@
                 alert('Name should only contain letters and spaces.');
                 return;
             }
-            
+
             if (!phoneRegex.test(phone)) {
                 alert('Phone number must be exactly 10 digits.');
                 return;
             }
-            
+
             if (!emailRegex.test(email)) {
                 alert('Please enter a valid email address.');
                 return;
@@ -179,6 +192,22 @@
             document.getElementById('payment-page').style.display = 'none';
             document.getElementById('payment-form').style.display = 'block';
             document.getElementById('payment-method').textContent = `Pay via ${method}`;
+            document.getElementById('confirm-method').textContent = method;
+        }
+
+        function confirmPayment() {
+            let upiId = document.getElementById('upi-id').value.trim();
+            let upiRegex = /^\d{10}$/;
+
+            if (!upiRegex.test(upiId)) {
+                alert("UPI ID must contain exactly 10 digits.");
+                return;
+            }
+
+            document.getElementById('confirm-name').textContent = document.getElementById('pay-student-name').textContent;
+            document.getElementById('confirm-upi').textContent = upiId;
+            document.getElementById('payment-form').style.display = 'none';
+            document.getElementById('confirmation-page').style.display = 'block';
         }
     </script>
 </body>
