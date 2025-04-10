@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Chief Warden Login & Dashboard</title>
+    <style>
+        body {
+            font-family: Arial;
+            background: #f4f4f4;
+            margin: 0;
+            padding: 0;
+        }
+
+        .center {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .login-box, .dashboard {
+            background: #fff;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px #ccc;
+            width: 90%;
+            max-width: 800px;
+        }
+
+        input {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+        }
+
+        button {
+            padding: 10px;
+            width: 100%;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            margin-top: 10px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            opacity: 0.9;
+        }
+
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            margin-top: 20px;
+        }
+
+        th, td {
+            border: 1px solid #999;
+            padding: 8px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+
+        .logout {
+            text-align: right;
+        }
+
+        .logout button {
+            width: auto;
+            background-color: #e74c3c;
+        }
+
+        .print-button {
+            text-align: right;
+            margin-top: 10px;
+        }
+
+        .print-button button {
+            width: auto;
+            background-color: #3498db;
+        }
+
+        @media print {
+            .logout, .print-button, #loginBox {
+                display: none;
+            }
+            body {
+                background: white;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="center">
+    <!-- Login Box -->
+    <div class="login-box" id="loginBox">
+        <h2>Chief Warden Login</h2>
+        <input type="text" id="username" placeholder="Username">
+        <input type="password" id="password" placeholder="Password">
+        <button onclick="login()">Login</button>
+        <p id="error" style="color:red;"></p>
+    </div>
+
+    <!-- Dashboard -->
+    <div class="dashboard" id="dashboard" style="display: none;">
+        <div class="logout">
+            <button onclick="logout()">Logout</button>
+        </div>
+
+        <h2>Vacating Form Submissions</h2>
+
+        <!-- Print Button -->
+        <div class="print-button">
+            <button onclick="window.print()">Print</button>
+        </div>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Reg No</th>
+                    <th>Name</th>
+                    <th>DOB</th>
+                    <th>Caretaker</th>
+                    <th>Vacating Date</th>
+                    <th>Reason</th>
+                    <th>ID Proof</th>
+                </tr>
+            </thead>
+            <tbody id="tableBody"></tbody>
+        </table>
+    </div>
+</div>
+
+<script>
+    // Dummy login credentials
+    const validUsername = "warden";
+    const validPassword = "1234";
+
+    // On load check login
+    window.onload = function () {
+        if (localStorage.getItem("wardenLoggedIn") === "true") {
+            showDashboard();
+        }
+    }
+
+    function login() {
+        const username = document.getElementById("username").value;
+        const password = document.getElementById("password").value;
+
+        if (username === validUsername && password === validPassword) {
+            localStorage.setItem("wardenLoggedIn", "true");
+            showDashboard();
+        } else {
+            document.getElementById("error").textContent = "Invalid credentials!";
+        }
+    }
+
+    function logout() {
+        localStorage.removeItem("wardenLoggedIn");
+        location.reload();
+    }
+
+    function showDashboard() {
+        document.getElementById("loginBox").style.display = "none";
+        document.getElementById("dashboard").style.display = "block";
+
+        // Load data from localStorage
+        const allForms = JSON.parse(localStorage.getItem("vacatingForms")) || {};
+        const tableBody = document.getElementById("tableBody");
+        tableBody.innerHTML = "";
+
+        Object.values(allForms).forEach(data => {
+            const row = document.createElement("tr");
+            row.innerHTML = `
+                <td>${data.regNo}</td>
+                <td>${data.studentName}</td>
+                <td>${data.dob}</td>
+                <td>${data.caretakerName}</td>
+                <td>${data.vacatingDate}</td>
+                <td>${data.reason}</td>
+                <td>${data.idProof}</td>
+            `;
+            tableBody.appendChild(row);
+        });
+    }
+</script>
+
+</body>
+</html>
