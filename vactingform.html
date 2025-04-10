@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Hostel Vacating Form</title>
     <style>
-        /* Global styles */
         body {
             font-family: Arial, sans-serif;
             background-color: #f4f4f4;
@@ -17,7 +16,6 @@
             height: 100vh;
         }
 
-        /* Form container styles */
         .form-container {
             background-color: white;
             padding: 30px;
@@ -38,16 +36,7 @@
             color: #555;
         }
 
-        input[type="text"], input[type="date"], input[type="file"], textarea {
-            width: 100%;
-            padding: 10px;
-            margin: 8px 0;
-            border-radius: 5px;
-            border: 1px solid #ccc;
-            font-size: 14px;
-        }
-
-        select {
+        input[type="text"], input[type="date"], input[type="file"], textarea, select {
             width: 100%;
             padding: 10px;
             margin: 8px 0;
@@ -132,11 +121,9 @@
     </div>
 
     <script>
-        // Handle form submission
         document.getElementById("vacatingForm").addEventListener("submit", function(event) {
-            event.preventDefault(); // Prevent the form from submitting normally
-            
-            // Get the form values
+            event.preventDefault();
+
             const regNo = document.getElementById("regNo").value;
             const studentName = document.getElementById("studentName").value;
             const dob = document.getElementById("dob").value;
@@ -145,25 +132,29 @@
             const reason = document.getElementById("reason").value;
             const idProof = document.getElementById("idProof").files[0] ? document.getElementById("idProof").files[0].name : 'No file uploaded';
 
-            // Check if any required fields are missing
             if (!regNo || !studentName || !dob || !caretakerName || !vacatingDate || !reason || !idProof) {
                 alert("Please fill in all fields.");
                 return;
             }
 
-            // Store the form data and mark the form as filled
-            localStorage.setItem('vacatingFormFilled', true);
-            localStorage.setItem('studentData', JSON.stringify({
-                regNo: regNo,
-                studentName: studentName,
-                dob: dob,
-                caretakerName: caretakerName,
-                vacatingDate: vacatingDate,
-                reason: reason,
-                idProof: idProof
-            }));
+            // Retrieve existing forms or initialize empty array
+            const existingForms = JSON.parse(localStorage.getItem("vacatingForms")) || [];
 
-            // Display the values in the confirmation section
+            // Add new form submission
+            existingForms.push({
+                regNo,
+                studentName,
+                dob,
+                caretakerName,
+                vacatingDate,
+                reason,
+                idProof
+            });
+
+            // Save back to localStorage
+            localStorage.setItem("vacatingForms", JSON.stringify(existingForms));
+
+            // Display the confirmation section
             document.getElementById("displayRegNo").textContent = regNo;
             document.getElementById("displayStudentName").textContent = studentName;
             document.getElementById("displayDob").textContent = dob;
@@ -172,11 +163,9 @@
             document.getElementById("displayReason").textContent = reason;
             document.getElementById("displayIdProof").textContent = idProof;
 
-            // Hide the form and show the confirmation message
             document.getElementById("vacatingForm").style.display = "none";
             document.getElementById("confirmationMessage").style.display = "block";
 
-            // Clear the form fields after submission
             document.getElementById("vacatingForm").reset();
         });
     </script>
