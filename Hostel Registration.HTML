@@ -70,7 +70,7 @@
     <!-- Registration Page -->
     <div class="container" id="registration-page">
         <h1>Hostel Registration</h1>
-        <p><strong>Total Rooms Available:</strong> <span id="rooms-available">10</span></p>
+        <p><strong>Total Rooms Available:</strong> <span id="rooms-available">500</span></p>
         <form id="registration-form">
             <label for="name">Full Name</label>
             <input type="text" id="name" name="name" required>
@@ -126,7 +126,7 @@
         <p><strong>Amount:</strong> ₹5000</p>
         <p><strong>Account Holder:</strong> Hostel Admin</p>
         <div class="qr-container">
-            <img src="C:\Users\himas\OneDrive\Pictures\accountqr.jpg" alt="QR Code for Payment">
+            <img src="your-qr-code.jpg" alt="QR Code for Payment">
         </div>
         <p>Pay via:</p>
         <button onclick="showPaymentForm('PhonePe')">PhonePe</button>
@@ -156,12 +156,25 @@
     </div>
 
     <script>
+        let roomsAvailable = 500;
+
         document.getElementById('registration-form').addEventListener('submit', function(event) {
             event.preventDefault();
+
+            if (roomsAvailable <= 0) {
+                alert("Sorry! No rooms available.");
+                return;
+            }
 
             let name = document.getElementById('name').value.trim();
             let email = document.getElementById('email').value.trim();
             let phone = document.getElementById('phone').value.trim();
+            let dob = document.getElementById('dob').value;
+            let gender = document.getElementById('gender').value;
+            let course = document.getElementById('course').value;
+            let address = document.getElementById('address').value;
+            let room = document.getElementById('room').value;
+            let idProof = document.getElementById('id-proof').value.split('\\').pop();
 
             let nameRegex = /^[A-Za-z\s]+$/;
             let phoneRegex = /^\d{10}$/;
@@ -181,6 +194,15 @@
                 alert('Please enter a valid email address.');
                 return;
             }
+
+            // Save registration to localStorage
+            const newStudent = {
+                name, email, phone, dob, gender, course, address, room, idProof
+            };
+
+            const existing = JSON.parse(localStorage.getItem("hostelRegistrations")) || [];
+            existing.push(newStudent);
+            localStorage.setItem("hostelRegistrations", JSON.stringify(existing));
 
             document.getElementById('student-name').textContent = name;
             document.getElementById('pay-student-name').textContent = name;
@@ -206,6 +228,10 @@
 
             document.getElementById('confirm-name').textContent = document.getElementById('pay-student-name').textContent;
             document.getElementById('confirm-upi').textContent = upiId;
+
+            roomsAvailable--;
+            document.getElementById('rooms-available').textContent = roomsAvailable;
+
             document.getElementById('payment-form').style.display = 'none';
             document.getElementById('confirmation-page').style.display = 'block';
         }
