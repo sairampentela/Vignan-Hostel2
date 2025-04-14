@@ -1,6 +1,8 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Chief Warden Login & Dashboard</title>
     <style>
         body {
@@ -14,7 +16,8 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            height: 100vh;
+            min-height: 100vh;
+            padding: 20px;
         }
 
         .login-box, .dashboard {
@@ -22,8 +25,8 @@
             padding: 30px;
             border-radius: 10px;
             box-shadow: 0 0 10px #ccc;
-            width: 90%;
-            max-width: 800px;
+            width: 100%;
+            max-width: 1200px;
         }
 
         input {
@@ -93,7 +96,6 @@
     </style>
 </head>
 <body>
-
 <div class="center">
     <!-- Login Box -->
     <div class="login-box" id="loginBox">
@@ -111,12 +113,9 @@
         </div>
 
         <h2>Vacating Form Submissions</h2>
-
-        <!-- Print Button -->
         <div class="print-button">
             <button onclick="window.print()">Print</button>
         </div>
-
         <table>
             <thead>
                 <tr>
@@ -131,15 +130,34 @@
             </thead>
             <tbody id="tableBody"></tbody>
         </table>
+
+        <h2 style="margin-top:40px;">Registered Students</h2>
+        <div class="print-button">
+            <button onclick="window.print()">Print</button>
+        </div>
+        <table>
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Phone</th>
+                    <th>DOB</th>
+                    <th>Gender</th>
+                    <th>Course</th>
+                    <th>Address</th>
+                    <th>Room Type</th>
+                    <th>ID Proof</th>
+                </tr>
+            </thead>
+            <tbody id="registrationTableBody"></tbody>
+        </table>
     </div>
 </div>
 
 <script>
-    // Dummy login credentials
     const validUsername = "warden";
     const validPassword = "1234";
 
-    // On load check login
     window.onload = function () {
         if (localStorage.getItem("wardenLoggedIn") === "true") {
             showDashboard();
@@ -167,12 +185,11 @@
         document.getElementById("loginBox").style.display = "none";
         document.getElementById("dashboard").style.display = "block";
 
-        // Load data from localStorage
-        const allForms = JSON.parse(localStorage.getItem("vacatingForms")) || {};
+        const vacatingForms = JSON.parse(localStorage.getItem("vacatingForms")) || {};
         const tableBody = document.getElementById("tableBody");
         tableBody.innerHTML = "";
 
-        Object.values(allForms).forEach(data => {
+        Object.values(vacatingForms).forEach(data => {
             const row = document.createElement("tr");
             row.innerHTML = `
                 <td>${data.regNo}</td>
@@ -185,8 +202,27 @@
             `;
             tableBody.appendChild(row);
         });
+
+        const registeredStudents = JSON.parse(localStorage.getItem("hostelRegistrations")) || [];
+        const regTableBody = document.getElementById("registrationTableBody");
+        regTableBody.innerHTML = "";
+
+        registeredStudents.forEach(student => {
+            const row = document.createElement("tr");
+            row.innerHTML = `
+                <td>${student.name}</td>
+                <td>${student.email}</td>
+                <td>${student.phone}</td>
+                <td>${student.dob}</td>
+                <td>${student.gender}</td>
+                <td>${student.course}</td>
+                <td>${student.address}</td>
+                <td>${student.room}</td>
+                <td>${student.idProof}</td>
+            `;
+            regTableBody.appendChild(row);
+        });
     }
 </script>
-
 </body>
 </html>
